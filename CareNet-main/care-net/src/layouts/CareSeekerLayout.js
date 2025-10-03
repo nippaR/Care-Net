@@ -8,7 +8,7 @@ export default function CareseekerLayout() {
         <Header
             links={[
             { to: "/careseeker", label: "Home" },
-            { to: "/careseeker/caregivers", label: "Caregivers" },
+            { to: "/careseeker/caregivers-list", label: "Hire" },
             { to: "/careseeker/feedbacks", label: "Feedbacks" },
             ]}
         />

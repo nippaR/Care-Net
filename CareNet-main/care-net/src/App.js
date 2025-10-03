@@ -18,6 +18,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import CareseekerDashboard from "./pages/CareseekerDashboard";
 import CaregiverDashboard from "./pages/CaregiverDashboard";
 import CareseekerProfile from "./pages/CareseekerProfile";
+import CaregiverProfile from "./pages/CaregiverProfile";
+import CaregiverList from "./pages/CaregiverList";
 
 export default function App() {
   return (
@@ -62,6 +64,7 @@ export default function App() {
             <Route index element={<CareseekerDashboard />} />
             <Route path="requests" element={<div>Requests Page</div>} />
             <Route path="profile" element={<CareseekerProfile />} />
+            <Route path="caregivers-list" element={<CaregiverList />} />
           </Route>
 
           {/* Caregiver Routes */}
@@ -78,7 +81,7 @@ export default function App() {
             <Route index element={<CaregiverDashboard />} />
             <Route path="patients" element={<div>Patients Page</div>} />
             <Route path="schedule" element={<div>Schedule Page</div>} />
-            <Route path="profile" element={<Profile />} /> {/* ✅ header visible */}
+            <Route path="profile" element={<CaregiverProfile />} />
           </Route>
 
           {/* Fallback */}
