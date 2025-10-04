@@ -24,6 +24,7 @@ import FeedbackForm from "./pages/Feedback/FeedbackForm";
 //Admin, CaresSeeker, and Caregiver components are imported above
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminCaregivers from "./pages/Admin/AdminCaregivers";
+import AdminFeedbackDashboard from "./pages/Admin/AdminFeedback";
 
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
           >
             <Route path="admin-dashboard" element={<AdminDashboard />} />
             <Route path="caregivers/admin-dashboard" element={<AdminCaregivers />} />
+            <Route path="admin-feedback-dashboard" element={<AdminFeedbackDashboard />} />
             <Route path="users" element={<div>Manage Users Page</div>} />
             <Route path="reports" element={<div>Reports Page</div>} />
             <Route path="profile" element={<Profile />} /> {/* ✅ header visible */}

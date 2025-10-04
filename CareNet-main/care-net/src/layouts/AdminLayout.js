@@ -12,7 +12,7 @@ export default function AdminLayout() {
             <h1 className="text-xl font-bold">CarNet</h1>
             <nav className="px-6 py-2 flex gap-4 text-sm print:hidden">
                 <Link to="/admin/admin-dashboard">Dashboard</Link>
-                <Link to="/admin/users">Feedback</Link>
+                <Link to="/admin/admin-feedback-dashboard">Feedback</Link>
                 <Link to="/admin/reports">Reports</Link>
             </nav>
             <div className="flex items-center gap-4">
