@@ -10,6 +10,7 @@ export default function CaregiverLayout() {
                     { to: "/caregiver", label: "Home" },
                     { to: "/caregiver/patients", label: "Patients" },
                     { to: "/caregiver/schedule", label: "Schedule" },
+                    { to: "/caregiver/feedback", label: "Feedback"},
                 ]}
             />
 

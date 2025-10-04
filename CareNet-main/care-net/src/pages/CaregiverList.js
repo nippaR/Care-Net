@@ -91,9 +91,11 @@ const Badge = ({ children, tone = "blue" }) => {
         <Panel
         className="overflow-hidden"
         right={
-            <button className="rounded-full border px-3 py-1.5 text-sm hover:bg-gray-50">
-            Give Feedbacks
-            </button>
+            <a href='/careseeker/feedback'>
+                <button className="rounded-full border px-3 py-1.5 text-sm hover:bg-gray-50">
+                    Give Feedbacks
+                </button>
+            </a>
         }
         >
         <div className="flex items-start gap-4">
