@@ -14,12 +14,17 @@ import CareseekerLayout from "./layouts/CareSeekerLayout";
 import CaregiverLayout from "./layouts/CaregiverLayout";
 
 // Pages inside layouts
-import AdminDashboard from "./pages/AdminDashboard";
 import CareseekerDashboard from "./pages/CareseekerDashboard";
 import CaregiverDashboard from "./pages/CaregiverDashboard";
 import CareseekerProfile from "./pages/CareseekerProfile";
 import CaregiverProfile from "./pages/CaregiverProfile";
 import CaregiverList from "./pages/CaregiverList";
+import FeedbackForm from "./pages/Feedback/FeedbackForm";
+
+//Admin, CaresSeeker, and Caregiver components are imported above
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminCaregivers from "./pages/Admin/AdminCaregivers";
+
 
 export default function App() {
   return (
@@ -44,7 +49,8 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<AdminDashboard />} />
+            <Route path="admin-dashboard" element={<AdminDashboard />} />
+            <Route path="caregivers/admin-dashboard" element={<AdminCaregivers />} />
             <Route path="users" element={<div>Manage Users Page</div>} />
             <Route path="reports" element={<div>Reports Page</div>} />
             <Route path="profile" element={<Profile />} /> {/* ✅ header visible */}
@@ -65,6 +71,7 @@ export default function App() {
             <Route path="requests" element={<div>Requests Page</div>} />
             <Route path="profile" element={<CareseekerProfile />} />
             <Route path="caregivers-list" element={<CaregiverList />} />
+            <Route path="feedback" element={<FeedbackForm />} />
           </Route>
 
           {/* Caregiver Routes */}
@@ -82,6 +89,7 @@ export default function App() {
             <Route path="patients" element={<div>Patients Page</div>} />
             <Route path="schedule" element={<div>Schedule Page</div>} />
             <Route path="profile" element={<CaregiverProfile />} />
+            <Route path="feedback" element={<FeedbackForm />} />
           </Route>
 
           {/* Fallback */}

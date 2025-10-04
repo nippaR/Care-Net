@@ -22,7 +22,10 @@ public class AuthService {
     private final JwtService jwt;
 
     public AuthResponse register(RegisterRequest r) throws Exception {
-        if (users.findByEmail(r.email()).isPresent()) throw new RuntimeException("Email already registered");
+        if (users.findByEmail(r.email()).isPresent()) {
+            throw new RuntimeException("Email already registered");
+        }
+
         User u = new User();
         u.setFirstName(r.firstName());
         u.setLastName(r.lastName());
@@ -31,19 +34,43 @@ public class AuthService {
         u.setAddress(r.address());
         u.setPasswordHash(encoder.encode(r.password()));
         u.setRoles(Set.of(r.role() == null ? Role.CARE_SEEKER : r.role()));
+
+        // Ensure newly created users are ACTIVE by default
+        if (u.getStatus() == null) {
+            u.setStatus(User.Status.ACTIVE);
+        }
+
         users.save(u);
 
         String role = u.getRoles().iterator().next().name();
-        String token = jwt.create(Map.of("sub", u.getId(), "email", u.getEmail(), "roles", u.getRoles()));
+        String token = jwt.create(Map.of(
+                "sub", u.getId(),
+                "email", u.getEmail(),
+                "roles", u.getRoles()
+        ));
         return new AuthResponse(token, role, u.getId(), u.getEmail());
     }
 
     public AuthResponse login(LoginRequest r) throws Exception {
-        User u = users.findByEmail(r.email()).orElseThrow(() -> new RuntimeException("Invalid email or password"));
-        if (!encoder.matches(r.password(), u.getPasswordHash())) throw new RuntimeException("Invalid email or password");
+        User u = users.findByEmail(r.email())
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        // Block login if user is deactivated
+        if (u.getStatus() == User.Status.DEACTIVATED) {
+            // You can throw a more specific exception type if you prefer
+            throw new RuntimeException("Account is deactivated. Please contact support.");
+        }
+
+        if (!encoder.matches(r.password(), u.getPasswordHash())) {
+            throw new RuntimeException("Invalid email or password");
+        }
 
         String role = u.getRoles().iterator().next().name();
-        String token = jwt.create(Map.of("sub", u.getId(), "email", u.getEmail(), "roles", u.getRoles()));
+        String token = jwt.create(Map.of(
+                "sub", u.getId(),
+                "email", u.getEmail(),
+                "roles", u.getRoles()
+        ));
         return new AuthResponse(token, role, u.getId(), u.getEmail());
     }
 }

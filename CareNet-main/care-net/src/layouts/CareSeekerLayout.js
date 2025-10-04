@@ -9,7 +9,7 @@ export default function CareseekerLayout() {
             links={[
             { to: "/careseeker", label: "Home" },
             { to: "/careseeker/caregivers-list", label: "Hire" },
-            { to: "/careseeker/feedbacks", label: "Feedbacks" },
+            { to: "/careseeker/feedback", label: "Feedbacks" },
             ]}
         />
 

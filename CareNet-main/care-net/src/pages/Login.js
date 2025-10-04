@@ -13,7 +13,7 @@ export default function Login() {
         setErr("");
         try {
         const res = await login(form);
-        if (res.role === "ADMIN") nav("/admin");
+        if (res.role === "ADMIN") nav("/admin/admin-dashboard");
         else if (res.role === "CAREGIVER") nav("/caregiver");
         else nav("/careseeker");
         } catch (_) {
