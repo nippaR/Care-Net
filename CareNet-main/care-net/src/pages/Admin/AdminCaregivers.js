@@ -1,40 +1,85 @@
+// src/AdminCaregivers.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import api from "../../api/client"; // <-- adjust path if needed
 
-/* --- tiny blue icons (inline SVG so no deps) --- */
-const Icon = {
-    search: (cls="w-4 h-4") => (
+/* ---------------- Tooltip (pure Tailwind, no deps) ---------------- */
+const Tooltip = ({ text, children, className = "" }) => (
+    <span className={`relative inline-flex group ${className}`}>
+        {children}
+        <span
+        className="
+            pointer-events-none absolute -top-2 left-1/2 z-50
+            -translate-x-1/2 -translate-y-full
+            whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white
+            opacity-0 scale-95 transition
+            group-hover:opacity-100 group-hover:scale-100
+            group-focus-within:opacity-100 group-focus-within:scale-100
+            shadow-lg
+        "
+        role="tooltip"
+        >
+        {text}
+        <span
+            className="
+            absolute left-1/2 top-full h-2 w-2 -translate-x-1/2
+            rotate-45 bg-gray-900
+            "
+        />
+        </span>
+    </span>
+    );
+
+    /* ---------------- tiny blue icons (inline SVG) ---------------- */
+    const Icon = {
+    search: (cls = "w-4 h-4") => (
         <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}>
-        <path fill="currentColor" d="M10 18a8 8 0 1 1 5.293-14.05l.257.222A8 8 0 0 1 18 10a7.96 7.96 0 0 1-1.69 4.91l4.39 4.39-1.42 1.41-4.39-4.39A7.96 7.96 0 0 1 10 18Zm0-2a6 6 0 1 0 0-12a6 6 0 0 0 0 12Z"/>
+        <path
+            fill="currentColor"
+            d="M10 18a8 8 0 1 1 5.293-14.05l.257.222A8 8 0 0 1 18 10a7.96 7.96 0 0 1-1.69 4.91l4.39 4.39-1.42 1.41-4.39-4.39A7.96 7.96 0  0 1 10 18Zm0-2a6 6 0 1 0 0-12a6 6 0 0 0 0 12Z"
+        />
         </svg>
     ),
-    edit: (cls="w-5 h-5") => (
+    edit: (cls = "w-5 h-5") => (
         <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}>
-        <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm14.71-9.21a1.003 1.003 0 0 0 0-1.42l-1.59-1.59a1.003 1.003 0 0 0-1.42 0l-1.34 1.34l3.75 3.75l1.6-1.08Z"/>
+        <path
+            fill="currentColor"
+            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm14.71-9.21a1.003 1.003 0 0 0 0-1.42l-1.59-1.59a1.003 1.003 0 0 0-1.42 0l-1.34 1.34l3.75 3.75l1.6-1.08Z"
+        />
         </svg>
     ),
-    save: (cls="w-5 h-5") => (
+    save: (cls = "w-5 h-5") => (
         <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}>
-        <path fill="currentColor" d="M5 3h11l4 4v14H5V3Zm2 2v14h11V8.83L15.17 5H7Zm1 9h9v2H8v-2Zm0-4h9v2H8V8Z"/>
+        <path
+            fill="currentColor"
+            d="M5 3h11l4 4v14H5V3Zm2 2v14h11V8.83L15.17 5H7Zm1 9h9v2H8v-2Zm0-4h9v2H8V8Z"
+        />
         </svg>
     ),
-    left: (cls="w-5 h-5") => (
-        <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}><path fill="currentColor" d="m14 7l-5 5l5 5V7Z"/></svg>
+    left: (cls = "w-5 h-5") => (
+        <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}>
+        <path fill="currentColor" d="m14 7l-5 5l5 5V7Z" />
+        </svg>
     ),
-    right: (cls="w-5 h-5") => (
-        <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}><path fill="currentColor" d="m10 17l5-5l-5-5v10Z"/></svg>
+    right: (cls = "w-5 h-5") => (
+        <svg viewBox="0 0 24 24" className={`${cls} text-blue-600`}>
+        <path fill="currentColor" d="m10 17l5-5l-5-5v10Z" />
+        </svg>
     ),
     };
 
-    /* --- status pill --- */
+    /* ---------------- status pill ---------------- */
     const StatusPill = ({ value }) => {
     const v = (value || "").toUpperCase();
     const map = {
-        "ACTIVE": "bg-green-50 text-green-700 ring-green-200",
-        "DEACTIVATED": "bg-rose-50 text-rose-700 ring-rose-200",
+        ACTIVE: "bg-green-50 text-green-700 ring-green-200",
+        DEACTIVATED: "bg-rose-50 text-rose-700 ring-rose-200",
     };
     return (
-        <span className={`px-2.5 py-1 rounded-full text-xs font-medium ring-1 ${map[v] || "bg-gray-50 text-gray-700 ring-gray-200"}`}>
+        <span
+        className={`px-2.5 py-1 rounded-full text-xs font-medium ring-1 ${
+            map[v] || "bg-gray-50 text-gray-700 ring-gray-200"
+        }`}
+        >
         {v || "—"}
         </span>
     );
@@ -42,7 +87,7 @@ const Icon = {
 
     export default function AdminCaregivers() {
     // caregiver rows from backend
-    const [rows, setRows] = useState([]);               // [{id, firstName, email, phone, status}]
+    const [rows, setRows] = useState([]); // [{id, firstName, email, phone, status}]
     const [loading, setLoading] = useState(true);
 
     // ui state
@@ -67,19 +112,22 @@ const Icon = {
             if (!ignore) setLoading(false);
         }
         })();
-        return () => { ignore = true; };
+        return () => {
+        ignore = true;
+        };
     }, []);
 
     // filtering
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
         if (!q) return rows;
-        return rows.filter(r =>
-        String(r.id).includes(q) ||
-        (r.firstName || "").toLowerCase().includes(q) ||
-        (r.email || "").toLowerCase().includes(q) ||
-        (r.phone || "").toLowerCase().includes(q) ||
-        (r.status || "").toLowerCase().includes(q)
+        return rows.filter(
+        (r) =>
+            String(r.id).includes(q) ||
+            (r.firstName || "").toLowerCase().includes(q) ||
+            (r.email || "").toLowerCase().includes(q) ||
+            (r.phone || "").toLowerCase().includes(q) ||
+            (r.status || "").toLowerCase().includes(q)
         );
     }, [rows, query]);
 
@@ -96,7 +144,7 @@ const Icon = {
         const id = editingId;
         const payload = { status: editDraft.status }; // ACTIVE / DEACTIVATED
         await api.put(`/api/admin/caregivers/${id}/status`, payload);
-        setRows(rs => rs.map(r => r.id === id ? { ...r, status: payload.status } : r));
+        setRows((rs) => rs.map((r) => (r.id === id ? { ...r, status: payload.status } : r)));
         setEditingId(null);
         } catch (e) {
         console.error(e);
@@ -107,9 +155,24 @@ const Icon = {
     return (
         <div className="min-h-screen bg-white px-5 py-6">
         <div className="mx-auto max-w-6xl">
+            {/* header */}
             <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Caregivers</h2>
-            <a href="#" className="text-sm font-medium text-blue-700 hover:underline">View all</a>
+            <div className="flex items-center gap-4">
+                <Tooltip text="View all caregivers">
+                <a href="#" className="text-sm font-medium text-blue-700 hover:underline print:hidden">
+                    View all
+                </a>
+                </Tooltip>
+                <Tooltip text="Print this page">
+                <button
+                    onClick={window.print}
+                    className="text-sm font-medium text-blue-700 hover:underline print:hidden"
+                >
+                    Print
+                </button>
+                </Tooltip>
+            </div>
             </div>
 
             {/* search */}
@@ -117,59 +180,91 @@ const Icon = {
             <input
                 type="text"
                 value={query}
-                onChange={(e)=>{ setQuery(e.target.value); setPage(1); }}
+                onChange={(e) => {
+                setQuery(e.target.value);
+                setPage(1);
+                }}
                 placeholder="Search by ID, name, email, phone"
                 className="w-full rounded-lg border border-gray-300 bg-white px-10 py-2.5 outline-none focus:ring-2 focus:ring-blue-300"
+                aria-label="Search caregivers"
             />
-            <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center">{Icon.search()}</div>
+            <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
+                {Icon.search()}
+            </div>
             </div>
 
             {/* table */}
-            <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+            <div className="overflow-x-auto overflow-visible rounded-xl border border-gray-200 shadow-sm">
             <table className="min-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-gray-50">
                 <tr className="text-gray-600">
-                    {["ID No", "First Name", "Email", "Phone No", "Status", "Edit"].map(h=>(
-                    <th key={h} className="px-4 py-3 text-left font-semibold">{h}</th>
+                    {["ID No", "First Name", "Email", "Phone No", "Status", "Edit"].map((h) => (
+                    <th key={h} className="px-4 py-3 text-left font-semibold">
+                        {h}
+                    </th>
                     ))}
                 </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 bg-white">
                 {loading && (
-                    <tr><td colSpan={6} className="px-4 py-10 text-center text-gray-500">Loading…</td></tr>
-                )}
-                {!loading && view.map((r)=>(
-                    <tr key={r.id} className="hover:bg-blue-50/30">
-                    <td className="px-4 py-3 font-medium text-gray-800">{r.id}</td>
-                    <td className="px-4 py-3">{r.firstName || "—"}</td>
-                    <td className="px-4 py-3">{r.email || "—"}</td>
-                    <td className="px-4 py-3">{r.phone || "—"}</td>
-                    <td className="px-4 py-3">
-                        {editingId === r.id ? (
-                        <select
-                            className="rounded border border-gray-300 px-2 py-1 focus:ring-2 focus:ring-blue-300"
-                            value={editDraft.status}
-                            onChange={(e)=>setEditDraft({ status: e.target.value })}
-                        >
-                            {["ACTIVE","DEACTIVATED"].map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                        ) : (
-                        <StatusPill value={r.status}/>
-                        )}
-                    </td>
-                    <td className="px-4 py-3">
-                        {editingId === r.id ? (
-                        <button onClick={saveEdit} className="rounded-md p-1.5 hover:bg-blue-50" title="Save">
-                            {Icon.save()}
-                        </button>
-                        ) : (
-                        <button onClick={()=>startEdit(r)} className="rounded-md p-1.5 hover:bg-blue-50" title="Edit">
-                            {Icon.edit()}
-                        </button>
-                        )}
+                    <tr>
+                    <td colSpan={6} className="px-4 py-10 text-center text-gray-500">
+                        Loading…
                     </td>
                     </tr>
-                ))}
+                )}
+                {!loading &&
+                    view.map((r) => (
+                    <tr key={r.id} className="hover:bg-blue-50/30">
+                        <td className="px-4 py-3 font-medium text-gray-800">{r.id}</td>
+                        <td className="px-4 py-3">{r.firstName || "—"}</td>
+                        <td className="px-4 py-3">{r.email || "—"}</td>
+                        <td className="px-4 py-3">{r.phone || "—"}</td>
+                        <td className="px-4 py-3">
+                        {editingId === r.id ? (
+                            <select
+                            className="rounded border border-gray-300 px-2 py-1 focus:ring-2 focus:ring-blue-300"
+                            value={editDraft.status}
+                            onChange={(e) => setEditDraft({ status: e.target.value })}
+                            aria-label="Change status"
+                            >
+                            {["ACTIVE", "DEACTIVATED"].map((s) => (
+                                <option key={s} value={s}>
+                                {s}
+                                </option>
+                            ))}
+                            </select>
+                        ) : (
+                            <StatusPill value={r.status} />
+                        )}
+                        </td>
+                        <td className="px-4 py-3">
+                        {editingId === r.id ? (
+                            <Tooltip text="Save status change">
+                            <button
+                                onClick={saveEdit}
+                                className="rounded-md p-1.5 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                title="Save"
+                                aria-label="Save"
+                            >
+                                {Icon.save()}
+                            </button>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip text="Edit user status">
+                            <button
+                                onClick={() => startEdit(r)}
+                                className="rounded-md p-1.5 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                title="Edit"
+                                aria-label="Edit"
+                            >
+                                {Icon.edit()}
+                            </button>
+                            </Tooltip>
+                        )}
+                        </td>
+                    </tr>
+                    ))}
                 {!loading && view.length === 0 && (
                     <tr>
                     <td className="px-4 py-10 text-center text-gray-500" colSpan={6}>
@@ -182,32 +277,42 @@ const Icon = {
             </div>
 
             {/* pagination */}
-            <div className="mt-4 flex items-center justify-center gap-2">
-            <button
-                className="rounded-full p-2 hover:bg-blue-50 disabled:opacity-40"
-                onClick={()=>setPage(p=>Math.max(1,p-1))}
-                disabled={page===1}
-                aria-label="Previous page"
-            >
-                {Icon.left()}
-            </button>
-            {Array.from({length: pages}).map((_,i)=>(
+            <div className="mt-4 flex items-center justify-center gap-2 overflow-visible">
+            <Tooltip text="Previous page">
                 <button
-                key={i}
-                onClick={()=>setPage(i+1)}
-                className={`h-9 w-9 rounded-full text-sm font-medium ${page===i+1 ? "bg-blue-600 text-white" : "text-blue-700 hover:bg-blue-50"}`}
+                className="rounded-full p-2 hover:bg-blue-50 disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                aria-label="Previous page"
                 >
-                {i+1}
+                {Icon.left()}
                 </button>
+            </Tooltip>
+
+            {Array.from({ length: pages }).map((_, i) => (
+                <Tooltip key={i} text={`Go to page ${i + 1}`}>
+                <button
+                    onClick={() => setPage(i + 1)}
+                    className={`h-9 w-9 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-300 ${
+                    page === i + 1 ? "bg-blue-600 text-white" : "text-blue-700 hover:bg-blue-50"
+                    }`}
+                    aria-label={`Page ${i + 1}`}
+                >
+                    {i + 1}
+                </button>
+                </Tooltip>
             ))}
-            <button
-                className="rounded-full p-2 hover:bg-blue-50 disabled:opacity-40"
-                onClick={()=>setPage(p=>Math.min(pages,p+1))}
-                disabled={page===pages}
+
+            <Tooltip text="Next page">
+                <button
+                className="rounded-full p-2 hover:bg-blue-50 disabled:opacity-40 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                onClick={() => setPage((p) => Math.min(pages, p + 1))}
+                disabled={page === pages}
                 aria-label="Next page"
-            >
+                >
                 {Icon.right()}
-            </button>
+                </button>
+            </Tooltip>
             </div>
         </div>
         </div>

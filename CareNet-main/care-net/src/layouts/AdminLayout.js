@@ -8,9 +8,9 @@ export default function AdminLayout() {
     return (
         <div className="min-h-screen flex flex-col">
         {/* Header */}
-        <header className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+        <header className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center position-sticky top-0 z-10">
             <h1 className="text-xl font-bold">CarNet</h1>
-            <nav className="px-6 py-2 flex gap-4 text-sm">
+            <nav className="px-6 py-2 flex gap-4 text-sm print:hidden">
                 <Link to="/admin/admin-dashboard">Dashboard</Link>
                 <Link to="/admin/users">Feedback</Link>
                 <Link to="/admin/reports">Reports</Link>
