@@ -41,4 +41,9 @@ public class Feedback {
 
     @Indexed
     private Instant createdAt = Instant.now();
+
+    public void setUpdatedAt(Instant now) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'setUpdatedAt'");
+    }
 }

@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import IMG1 from "../assets/profile.jpg";
 
 export default function Header({ links = [] }) {
     const { user } = useAuth();
@@ -15,7 +16,7 @@ export default function Header({ links = [] }) {
     };
 
     return (
-        <header className="bg-white shadow-sm">
+        <header className="bg-white shadow-sm font-poppins">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
             {/* Left: Logo */}
             <div className="text-2xl font-serif italic font-bold">
@@ -25,7 +26,7 @@ export default function Header({ links = [] }) {
             {/* Middle: Nav */}
             <nav className="flex gap-8 text-sm font-medium">
             {links.map((l) => (
-                <Link key={l.to} to={l.to} className="hover:text-green-700 transition">
+                <Link key={l.to} to={l.to} className="hover:text-blue-700 transition text-semibold">
                 {l.label}
                 </Link>
             ))}
@@ -37,11 +38,7 @@ export default function Header({ links = [] }) {
             className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200"
             title="Profile"
             >
-            <img
-                src={`https://api.dicebear.com/8.0/thumbs/svg?seed=${user?.email || "user"}`}
-                alt="avatar"
-                className="w-full h-full object-cover"
-            />
+            <img src={IMG1} alt="TripTrap Logo" className="h-20 w-auto mt-5" />
             </button>
         </div>
         </header>

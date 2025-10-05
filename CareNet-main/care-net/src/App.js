@@ -7,6 +7,7 @@ import RoleRoute from "./auth/RoleRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import SiteFooter from "./components/Footer";
 
 // Layouts  (⚠ keep names consistent with actual filenames)
 import AdminLayout from "./layouts/AdminLayout";
@@ -20,6 +21,9 @@ import CareseekerProfile from "./pages/CareseekerProfile";
 import CaregiverProfile from "./pages/CaregiverProfile";
 import CaregiverList from "./pages/CaregiverList";
 import FeedbackForm from "./pages/Feedback/FeedbackForm";
+import FeedbackHome from "./pages/Feedback/FeedbackHome"
+import FeedbackMy from "./pages/Feedback/FeedbackMy";
+
 
 //Admin, CaresSeeker, and Caregiver components are imported above
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -35,6 +39,7 @@ export default function App() {
           {/* Public */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/footer" element={<SiteFooter />} />
 
           {/* Optional: root -> login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -74,6 +79,8 @@ export default function App() {
             <Route path="profile" element={<CareseekerProfile />} />
             <Route path="caregivers-list" element={<CaregiverList />} />
             <Route path="feedback" element={<FeedbackForm />} />
+            <Route path="feedback-home" element={<FeedbackHome />} />
+            <Route path="feedback-my" element={<FeedbackMy />} />
           </Route>
 
           {/* Caregiver Routes */}

@@ -1,10 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../components/header";
+import SiteFooter from "../components/Footer";
 
 export default function CaregiverLayout() {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col font-poppins">
             <Header
                 links={[
                     { to: "/caregiver", label: "Home" },
@@ -18,6 +19,8 @@ export default function CaregiverLayout() {
         <main className="flex-1 p-6 bg-gray-50">
             <Outlet />
         </main>
+        {/* Footer */}
+        <SiteFooter />
         </div>
     );
 }

@@ -146,7 +146,7 @@ function Star({ filled, half, onClick, onMouseEnter, onMouseLeave, label }) {
     };
 
     return (
-        <div className="min-h-screen bg-slate-100 p-4 md:p-8">
+        <div className="min-h-screen bg-slate-100 p-4 md:p-8 *:font-poppins">
         <form
             onSubmit={submit}
             className="mx-auto max-w-3xl rounded-2xl bg-white/80 backdrop-blur ring-1 ring-black/5 shadow-lg"
@@ -193,10 +193,10 @@ function Star({ filled, half, onClick, onMouseEnter, onMouseLeave, label }) {
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
             >
                 <option value="">Your Role</option>
-                <option>Owner / Founder</option>
-                <option>Manager</option>
+                <option>Client</option>
+                {/* <option>Manager</option>
                 <option>Engineer</option>
-                <option>Analyst</option>
+                <option>Analyst</option> */}
                 <option>Other</option>
             </select>
             </div>

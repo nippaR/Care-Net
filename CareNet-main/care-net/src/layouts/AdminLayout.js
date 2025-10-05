@@ -1,12 +1,13 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import SiteFooter from "../components/Footer";
 
 export default function AdminLayout() {
     const { user, logout } = useAuth();
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col font-poppins">
         {/* Header */}
         <header className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center position-sticky top-0 z-10">
             <h1 className="text-xl font-bold">CarNet</h1>
@@ -29,6 +30,8 @@ export default function AdminLayout() {
         <main className="flex-1 p-6 bg-gray-50">
             <Outlet />
         </main>
+        {/* Footer */}
+        <SiteFooter />
         </div>
     );
 }
